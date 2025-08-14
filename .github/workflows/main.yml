@@ -24,7 +24,7 @@ jobs:
       - name: Full-year calendar
         uses: lowlighter/metrics@latest
         with:
-          filename: metrics.plugin.isocalendar.fullyear.svg
+          filename: metrics.isocalendar.svg
           token: ${{ secrets.METRICS_TOKEN }}
           base: ""
           plugin_isocalendar: "yes"
@@ -33,6 +33,7 @@ jobs:
       - name: Lang
         uses: lowlighter/metrics@latest
         with:
+          filename: metrics.lang.svg
           token: ${{ secrets.METRICS_TOKEN }}
           plugin_languages: yes
           plugin_languages_indepth: yes
