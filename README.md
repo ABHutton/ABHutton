@@ -1,5 +1,5 @@
 ## Hi there 👋
-![My GitHub Metrics](https://github.com/ABHutton/ABHutton/blob/master/metrics.svg)
+![My GitHub Metrics](https://github.com/ABHutton/ABHutton/blob/master/github-metrics.svg)
 <!--
 **ABHutton/ABHutton** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
