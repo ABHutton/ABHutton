@@ -5,9 +5,11 @@ Edit the content below, then run from the repo root:
 
     python3 assets/build.py
 
-Each panel is written as assets/<name>-dark.svg (Tokyo Night) and
-assets/<name>-light.svg (Tokyo Night Day). Skill icons are downloaded from
-skillicons.dev and embedded, since GitHub won't load external images inside an SVG.
+Each panel is written as assets/<name>-dark.svg (Tokyo Night),
+assets/<name>-light.svg (Tokyo Night Day) and assets/<name>-auto.svg, which
+holds both and follows the viewer's OS theme (for Codeberg, which strips
+<picture>). Skill icons are downloaded from skillicons.dev and embedded, since
+GitHub won't load external images inside an SVG.
 """
 import base64
 import pathlib
@@ -51,17 +53,30 @@ OUT = pathlib.Path(__file__).parent
 
 
 def panel(t, height, body, command=None):
+    """Returns (height, content) for one theme; document() wraps it in an <svg>."""
     prompt = ""
     if command:
         prompt = (f'<text x="{PAD_X}" y="38" font-size="14" fill="{t["comment"]}">'
                   f'<tspan fill="{t["prompt"]}">❯</tspan> {escape(command)}</text>')
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" height="{height}" viewBox="0 0 {WIDTH} {height}">
-  <style>text {{ font-family: {FONT}; }}</style>
-  <rect x="0.5" y="0.5" width="{WIDTH - 1}" height="{height - 1}" rx="12" fill="{t["bg"]}" stroke="{t["border"]}"/>
+    return height, f'''<rect x="0.5" y="0.5" width="{WIDTH - 1}" height="{height - 1}" rx="12" fill="{t["bg"]}" stroke="{t["border"]}"/>
   {prompt}
-  {body}
+  {body}'''
+
+
+def document(height, content, style=""):
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" height="{height}" viewBox="0 0 {WIDTH} {height}">
+  <style>text {{ font-family: {FONT}; }}{style}</style>
+  {content}
 </svg>
 '''
+
+
+def auto(light, dark):
+    """Both themes in one file, switched by the viewer's OS colour scheme."""
+    (height, light), (_, dark) = light, dark
+    style = (" .dark { display: none; }"
+             " @media (prefers-color-scheme: dark) { .light { display: none; } .dark { display: inline; } }")
+    return document(height, f'<g class="light">\n  {light}\n  </g>\n  <g class="dark">\n  {dark}\n  </g>', style)
 
 
 def header(t):
@@ -105,8 +120,11 @@ def stack(t, theme):
 
 
 if __name__ == "__main__":
-    for theme, t in THEMES.items():
-        for name, svg in (("header", header(t)), ("about", about(t)), ("stack", stack(t, theme))):
-            path = OUT / f"{name}-{theme}.svg"
+    panels = {theme: {"header": header(t), "about": about(t), "stack": stack(t, theme)} for theme, t in THEMES.items()}
+    for name in panels["dark"]:
+        files = {theme: document(*panels[theme][name]) for theme in THEMES}
+        files["auto"] = auto(panels["light"][name], panels["dark"][name])
+        for variant, svg in files.items():
+            path = OUT / f"{name}-{variant}.svg"
             path.write_text(svg)
             print(f"wrote {path.relative_to(OUT.parent)}")

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="830" height="150" viewBox="0 0 830 150">
+  <style>text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; } .dark { display: none; } @media (prefers-color-scheme: dark) { .light { display: none; } .dark { display: inline; } }</style>
+  <g class="light">
+  <rect x="0.5" y="0.5" width="829" height="149" rx="12" fill="#e1e2e7" stroke="#c4c8da"/>
+  
+  <text x="415" y="38" text-anchor="middle" font-size="14" fill="#848cb5"><tspan fill="#587539">❯</tspan> whoami</text>
+  <text x="415" y="80" text-anchor="middle" font-size="32" font-weight="bold" fill="#3760bf">Hi, I'm <tspan fill="#2e7de9">Alexander</tspan></text>
+  <text x="415" y="106" text-anchor="middle" font-size="15" fill="#848cb5">Backend developer · South Africa</text>
+  <circle cx="373" cy="128" r="4" fill="#f52a65"/><circle cx="387" cy="128" r="4" fill="#b15c00"/><circle cx="401" cy="128" r="4" fill="#8c6c3e"/><circle cx="415" cy="128" r="4" fill="#587539"/><circle cx="429" cy="128" r="4" fill="#007197"/><circle cx="443" cy="128" r="4" fill="#2e7de9"/><circle cx="457" cy="128" r="4" fill="#9854f1"/>
+  </g>
+  <g class="dark">
+  <rect x="0.5" y="0.5" width="829" height="149" rx="12" fill="#1a1b26" stroke="#292e42"/>
+  
+  <text x="415" y="38" text-anchor="middle" font-size="14" fill="#565f89"><tspan fill="#9ece6a">❯</tspan> whoami</text>
+  <text x="415" y="80" text-anchor="middle" font-size="32" font-weight="bold" fill="#c0caf5">Hi, I'm <tspan fill="#7aa2f7">Alexander</tspan></text>
+  <text x="415" y="106" text-anchor="middle" font-size="15" fill="#565f89">Backend developer · South Africa</text>
+  <circle cx="373" cy="128" r="4" fill="#f7768e"/><circle cx="387" cy="128" r="4" fill="#ff9e64"/><circle cx="401" cy="128" r="4" fill="#e0af68"/><circle cx="415" cy="128" r="4" fill="#9ece6a"/><circle cx="429" cy="128" r="4" fill="#7dcfff"/><circle cx="443" cy="128" r="4" fill="#7aa2f7"/><circle cx="457" cy="128" r="4" fill="#bb9af7"/>
+  </g>
+</svg>
