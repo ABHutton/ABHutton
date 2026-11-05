@@ -1,8 +1,8 @@
 name: Metrics
 on:
-  # Schedule daily updates
+  # Weekly updates (Sundays 00:00 UTC)
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * 0"
   # (optional) Run workflow manually
   workflow_dispatch:
   # (optional) Run workflow when pushing on master/main
@@ -15,30 +15,112 @@ jobs:
       name: production
     permissions:
       contents: write
+    env:
+      # Tokyo Night (dark mode) colours for the "classic" template and isocalendar
+      TOKYO_NIGHT_CSS: >-
+        svg, svg * { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace !important; }
+        svg { font-size: 12px !important; }
+        .items-wrapper { background: #1a1b26 !important; border: 1px solid #292e42 !important; border-radius: 12px !important; padding: 8px 10px !important; box-sizing: border-box !important; }
+        svg { color: #a9b1d6 !important; }
+        h1, h2, h3 { color: #7aa2f7 !important; }
+        .label { color: #bb9af7 !important; background-color: #bb9af726 !important; }
+        .field svg { fill: #7dcfff !important; }
+        footer, .field.language.details small { color: #565f89 !important; }
+        [fill="#ebedf0"] { fill: #292e42 !important; }
+        [fill="#9be9a8"] { fill: #394b70 !important; }
+        [fill="#40c463"] { fill: #3d59a1 !important; }
+        [fill="#30a14e"] { fill: #7aa2f7 !important; }
+        [fill="#216e39"] { fill: #7dcfff !important; }
+      # Tokyo Night Day (light mode) colours
+      TOKYO_DAY_CSS: >-
+        svg, svg * { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace !important; }
+        svg { font-size: 12px !important; }
+        .items-wrapper { background: #e1e2e7 !important; border: 1px solid #c4c8da !important; border-radius: 12px !important; padding: 8px 10px !important; box-sizing: border-box !important; }
+        svg { color: #6172b0 !important; }
+        h1, h2, h3 { color: #2e7de9 !important; }
+        .label { color: #9854f1 !important; background-color: #9854f11f !important; }
+        .field svg { fill: #007197 !important; }
+        footer, .field.language.details small { color: #848cb5 !important; }
+        [fill="#ebedf0"] { fill: #e1e2e7 !important; }
+        [fill="#9be9a8"] { fill: #b7c1e3 !important; }
+        [fill="#40c463"] { fill: #7890dd !important; }
+        [fill="#30a14e"] { fill: #2e7de9 !important; }
+        [fill="#216e39"] { fill: #3760bf !important; }
     steps:
-      - name: General Metrics
-        uses: lowlighter/metrics@latest
+      # Each render only writes to /metrics_renders (output_action: none);
+      # the last step commits everything in one go.
+      - name: General metrics
+        uses: lowlighter/metrics@v3.34
         with:
           token: ${{ secrets.METRICS_TOKEN }}
-          
+          output_action: none
+          extras_css: ${{ env.TOKYO_DAY_CSS }}
+          config_timezone: Africa/Johannesburg
+
+      - name: General metrics (dark)
+        uses: lowlighter/metrics@v3.34
+        with:
+          filename: github-metrics-dark.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+          output_action: none
+          config_timezone: Africa/Johannesburg
+          extras_css: ${{ env.TOKYO_NIGHT_CSS }}
+
       - name: Full-year calendar
-        uses: lowlighter/metrics@latest
+        uses: lowlighter/metrics@v3.34
         with:
           filename: metrics.isocalendar.svg
           token: ${{ secrets.METRICS_TOKEN }}
+          output_action: none
+          extras_css: ${{ env.TOKYO_DAY_CSS }}
+          config_timezone: Africa/Johannesburg
           base: ""
           plugin_isocalendar: "yes"
           plugin_isocalendar_duration: full-year
 
-      # - name: Lang
-      #   uses: lowlighter/metrics@latest
-      #   with:
-      #     filename: metrics.lang.svg
-      #     token: ${{ secrets.METRICS_TOKEN }}
-      #     base: ""
-      #     plugin_languages: yes
-      #     plugin_languages_indepth: yes
-      #     commits_authoring: Alexander Hutton, ABHutton, ABHutton@users.noreply.github.com
-      #     plugin_languages_details: lines, bytes-size
-      #     plugin_languages_limit: 4
-      #     plugin_languages_analysis_timeout: 15
+      - name: Full-year calendar (dark)
+        uses: lowlighter/metrics@v3.34
+        with:
+          filename: metrics.isocalendar-dark.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+          output_action: none
+          config_timezone: Africa/Johannesburg
+          extras_css: ${{ env.TOKYO_NIGHT_CSS }}
+          base: ""
+          plugin_isocalendar: "yes"
+          plugin_isocalendar_duration: full-year
+
+      # Plain (non-indepth) languages: based on repo byte counts, so it can't time out
+      - name: Languages
+        uses: lowlighter/metrics@v3.34
+        with:
+          filename: metrics.languages.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+          output_action: none
+          extras_css: ${{ env.TOKYO_DAY_CSS }}
+          base: ""
+          plugin_languages: "yes"
+          plugin_languages_limit: 6
+
+      - name: Languages (dark)
+        uses: lowlighter/metrics@v3.34
+        with:
+          filename: metrics.languages-dark.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+          output_action: none
+          extras_css: ${{ env.TOKYO_NIGHT_CSS }}
+          base: ""
+          plugin_languages: "yes"
+          plugin_languages_limit: 6
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Commit renders
+        run: |
+          cp /metrics_renders/*.svg .
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add *.svg
+          git diff --cached --quiet || git commit -m "Update metrics [skip ci]"
+          git push
