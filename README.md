@@ -40,9 +40,3 @@
     <img src="/metrics.isocalendar.svg" alt="Contribution calendar" width="49%" align="top">
   </picture>
 </p>
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="/metrics.languages-dark.svg">
-    <img src="/metrics.languages.svg" alt="Most used languages" width="49%">
-  </picture>
-</p>

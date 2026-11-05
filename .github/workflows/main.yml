@@ -90,29 +90,6 @@ jobs:
           plugin_isocalendar: "yes"
           plugin_isocalendar_duration: full-year
 
-      # Plain (non-indepth) languages: based on repo byte counts, so it can't time out
-      - name: Languages
-        uses: lowlighter/metrics@v3.34
-        with:
-          filename: metrics.languages.svg
-          token: ${{ secrets.METRICS_TOKEN }}
-          output_action: none
-          extras_css: ${{ env.TOKYO_DAY_CSS }}
-          base: ""
-          plugin_languages: "yes"
-          plugin_languages_limit: 6
-
-      - name: Languages (dark)
-        uses: lowlighter/metrics@v3.34
-        with:
-          filename: metrics.languages-dark.svg
-          token: ${{ secrets.METRICS_TOKEN }}
-          output_action: none
-          extras_css: ${{ env.TOKYO_NIGHT_CSS }}
-          base: ""
-          plugin_languages: "yes"
-          plugin_languages_limit: 6
-
       # Single-file light/dark cards for the Codeberg profile, which strips <picture>
       - name: General metrics (auto)
         uses: lowlighter/metrics@v3.34
