@@ -90,28 +90,29 @@ jobs:
           plugin_isocalendar: "yes"
           plugin_isocalendar_duration: full-year
 
-      # Plain (non-indepth) languages: based on repo byte counts, so it can't time out
-      - name: Languages
+      # Single-file light/dark cards for the Codeberg profile, which strips <picture>
+      - name: General metrics (auto)
         uses: lowlighter/metrics@v3.34
         with:
-          filename: metrics.languages.svg
+          filename: github-metrics-auto.svg
           token: ${{ secrets.METRICS_TOKEN }}
           output_action: none
-          extras_css: ${{ env.TOKYO_DAY_CSS }}
-          base: ""
-          plugin_languages: "yes"
-          plugin_languages_limit: 6
+          config_timezone: Africa/Johannesburg
+          # Day palette, switching to Night when the viewer's OS is in dark mode
+          extras_css: "${{ env.TOKYO_DAY_CSS }} @media (prefers-color-scheme: dark) { ${{ env.TOKYO_NIGHT_CSS }} }"
 
-      - name: Languages (dark)
+      - name: Full-year calendar (auto)
         uses: lowlighter/metrics@v3.34
         with:
-          filename: metrics.languages-dark.svg
+          filename: metrics.isocalendar-auto.svg
           token: ${{ secrets.METRICS_TOKEN }}
           output_action: none
-          extras_css: ${{ env.TOKYO_NIGHT_CSS }}
+          config_timezone: Africa/Johannesburg
+          # Day palette, switching to Night when the viewer's OS is in dark mode
+          extras_css: "${{ env.TOKYO_DAY_CSS }} @media (prefers-color-scheme: dark) { ${{ env.TOKYO_NIGHT_CSS }} }"
           base: ""
-          plugin_languages: "yes"
-          plugin_languages_limit: 6
+          plugin_isocalendar: "yes"
+          plugin_isocalendar_duration: full-year
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -124,3 +125,11 @@ jobs:
           git add *.svg
           git diff --cached --quiet || git commit -m "Update metrics [skip ci]"
           git push
+
+      # The Codeberg profile loads these via jsDelivr, which caches branch files for up to 12h
+      - name: Purge jsDelivr cache
+        if: github.ref == 'refs/heads/main'
+        run: |
+          for f in *-auto.svg assets/*-auto.svg; do
+            curl -fsS "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/$f" > /dev/null || echo "purge failed: $f"
+          done
