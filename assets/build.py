@@ -22,7 +22,7 @@ TAGLINE = "Backend developer · South Africa"
 # (text, organisation) — rendered as "text at organisation"
 ABOUT = [
     ("Intermediate Software Engineer", "AgrigateOne"),
-    ("BEng Mechtronics", "SUN"),
+    ("BEng Mechatronics", "SUN"),
     ("BSc majoring in Physics and Engineering Subjects", "UFS"),
 ]
 

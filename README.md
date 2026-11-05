@@ -19,7 +19,7 @@
 <p>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="/assets/about-dark.svg">
-    <img src="/assets/about-light.svg" alt="About me: Intermediate Software Engineer at AgrigateOne; BEng Mechtronics at SUN; BSc majoring in Physics and Engineering Subjects at UFS." width="100%">
+    <img src="/assets/about-light.svg" alt="About me: Intermediate Software Engineer at AgrigateOne; BEng Mechatronics at SUN; BSc majoring in Physics and Engineering Subjects at UFS." width="100%">
   </picture>
 </p>
 
