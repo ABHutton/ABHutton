@@ -16,17 +16,36 @@ jobs:
     permissions:
       contents: write
     env:
-      # Recolours the "classic" template and isocalendar for GitHub's dark theme
-      DARK_CSS: >-
-        svg { color: #8b949e !important; }
-        h1, h2, h3 { color: #58a6ff !important; }
-        .label { color: #58a6ff !important; }
-        footer, .field.language.details small { color: #8b949e !important; }
-        [fill="#ebedf0"] { fill: #161b22 !important; }
-        [fill="#9be9a8"] { fill: #0e4429 !important; }
-        [fill="#40c463"] { fill: #006d32 !important; }
-        [fill="#30a14e"] { fill: #26a641 !important; }
-        [fill="#216e39"] { fill: #39d353 !important; }
+      # Tokyo Night (dark mode) colours for the "classic" template and isocalendar
+      TOKYO_NIGHT_CSS: >-
+        svg, svg * { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace !important; }
+        svg { font-size: 12px !important; }
+        .items-wrapper { background: #1a1b26 !important; border: 1px solid #292e42 !important; border-radius: 12px !important; padding: 8px 10px !important; box-sizing: border-box !important; }
+        svg { color: #a9b1d6 !important; }
+        h1, h2, h3 { color: #7aa2f7 !important; }
+        .label { color: #bb9af7 !important; background-color: #bb9af726 !important; }
+        .field svg { fill: #7dcfff !important; }
+        footer, .field.language.details small { color: #565f89 !important; }
+        [fill="#ebedf0"] { fill: #292e42 !important; }
+        [fill="#9be9a8"] { fill: #394b70 !important; }
+        [fill="#40c463"] { fill: #3d59a1 !important; }
+        [fill="#30a14e"] { fill: #7aa2f7 !important; }
+        [fill="#216e39"] { fill: #7dcfff !important; }
+      # Tokyo Night Day (light mode) colours
+      TOKYO_DAY_CSS: >-
+        svg, svg * { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace !important; }
+        svg { font-size: 12px !important; }
+        .items-wrapper { background: #e1e2e7 !important; border: 1px solid #c4c8da !important; border-radius: 12px !important; padding: 8px 10px !important; box-sizing: border-box !important; }
+        svg { color: #6172b0 !important; }
+        h1, h2, h3 { color: #2e7de9 !important; }
+        .label { color: #9854f1 !important; background-color: #9854f11f !important; }
+        .field svg { fill: #007197 !important; }
+        footer, .field.language.details small { color: #848cb5 !important; }
+        [fill="#ebedf0"] { fill: #e1e2e7 !important; }
+        [fill="#9be9a8"] { fill: #b7c1e3 !important; }
+        [fill="#40c463"] { fill: #7890dd !important; }
+        [fill="#30a14e"] { fill: #2e7de9 !important; }
+        [fill="#216e39"] { fill: #3760bf !important; }
     steps:
       # Each render only writes to /metrics_renders (output_action: none);
       # the last step commits everything in one go.
@@ -35,6 +54,7 @@ jobs:
         with:
           token: ${{ secrets.METRICS_TOKEN }}
           output_action: none
+          extras_css: ${{ env.TOKYO_DAY_CSS }}
           config_timezone: Africa/Johannesburg
 
       - name: General metrics (dark)
@@ -44,7 +64,7 @@ jobs:
           token: ${{ secrets.METRICS_TOKEN }}
           output_action: none
           config_timezone: Africa/Johannesburg
-          extras_css: ${{ env.DARK_CSS }}
+          extras_css: ${{ env.TOKYO_NIGHT_CSS }}
 
       - name: Full-year calendar
         uses: lowlighter/metrics@v3.34
@@ -52,6 +72,7 @@ jobs:
           filename: metrics.isocalendar.svg
           token: ${{ secrets.METRICS_TOKEN }}
           output_action: none
+          extras_css: ${{ env.TOKYO_DAY_CSS }}
           config_timezone: Africa/Johannesburg
           base: ""
           plugin_isocalendar: "yes"
@@ -64,7 +85,7 @@ jobs:
           token: ${{ secrets.METRICS_TOKEN }}
           output_action: none
           config_timezone: Africa/Johannesburg
-          extras_css: ${{ env.DARK_CSS }}
+          extras_css: ${{ env.TOKYO_NIGHT_CSS }}
           base: ""
           plugin_isocalendar: "yes"
           plugin_isocalendar_duration: full-year
@@ -76,6 +97,7 @@ jobs:
           filename: metrics.languages.svg
           token: ${{ secrets.METRICS_TOKEN }}
           output_action: none
+          extras_css: ${{ env.TOKYO_DAY_CSS }}
           base: ""
           plugin_languages: "yes"
           plugin_languages_limit: 6
@@ -86,7 +108,7 @@ jobs:
           filename: metrics.languages-dark.svg
           token: ${{ secrets.METRICS_TOKEN }}
           output_action: none
-          extras_css: ${{ env.DARK_CSS }}
+          extras_css: ${{ env.TOKYO_NIGHT_CSS }}
           base: ""
           plugin_languages: "yes"
           plugin_languages_limit: 6

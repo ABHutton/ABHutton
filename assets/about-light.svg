@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="830" height="160" viewBox="0 0 830 160">
+  <style>text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }</style>
+  <rect x="0.5" y="0.5" width="829" height="159" rx="12" fill="#e1e2e7" stroke="#c4c8da"/>
+  <text x="32" y="38" font-size="14" fill="#848cb5"><tspan fill="#587539">❯</tspan> cat about.txt</text>
+  <text x="32" y="72" font-size="15" fill="#3760bf"><tspan fill="#9854f1">-</tspan> Intermediate Software Engineer <tspan fill="#848cb5">at</tspan> <tspan fill="#2e7de9">AgrigateOne</tspan></text>
+  <text x="32" y="100" font-size="15" fill="#3760bf"><tspan fill="#9854f1">-</tspan> BEng Mechtronics <tspan fill="#848cb5">at</tspan> <tspan fill="#2e7de9">SUN</tspan></text>
+  <text x="32" y="128" font-size="15" fill="#3760bf"><tspan fill="#9854f1">-</tspan> BSc majoring in Physics and Engineering Subjects <tspan fill="#848cb5">at</tspan> <tspan fill="#2e7de9">UFS</tspan></text>
+</svg>
